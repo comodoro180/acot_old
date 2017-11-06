@@ -12,13 +12,13 @@
             <ul class="nav navbar-nav">
                 <li><a href="#">
                         <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
-                        Menu1
+                        MenuAA
                     </a>
                 </li>
                 <li><a href="#">Menu2</a></li>
                 <li><a href="#">Menu3</a></li>
                 <li><a href="#">Menu4</a></li>
-                <li><a href="#">Menu4</a></li>
+                <li><a href="#">Menu6</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
                 <li><a href="RegistroUsuario.php">Registro</a></li>

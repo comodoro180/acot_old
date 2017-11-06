@@ -36,23 +36,7 @@ include_once '../plantillas/menu.php';
                             Panel 2
                         </div>
                         <div class="panel-body">
-                            <?php
-                            include_once 'app/Conexion.inc.php';
-                            include_once 'app/RepositorioUsuario.inc.php';
-
-                            Conexion::abrir_conexion();
-                            $usuarios = RepositorioUsuario::obtener_todos(Conexion::obtener_conexion());
-                            echo count($usuarios);
-                            echo "<br>";
-
-                            foreach ($usuarios as $i) {
-                                echo $i->obtener_nombre();
-                                echo "<br>";
-                            }
-
-                            Conexion::cerrar_conexion()
-                            ?>
-<!--                                    <p>Contenido del panel 2 kkkk</p>-->
+                            Contenido panel 2
                         </div>
                     </div>
                 </div>
@@ -60,6 +44,9 @@ include_once '../plantillas/menu.php';
         </div>   
     </div>
 </div>
+
+<script src="../../js/jquery.min.js"></script>
+<script src="../../js/bootstrap.min.js"></script>     
 <?php
 include_once '../plantillas/pie.php';
 ?>
