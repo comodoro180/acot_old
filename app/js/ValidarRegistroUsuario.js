@@ -46,12 +46,16 @@ $(document).ready(function () {
           } else {
             $("#tituloMensaje").html("¡Transacción exitosa!");
             $("#textoMensaje").html("Usuario registrado correctamente.");
-            $("#enlaceMensaje").attr("href","../index.php");
+            $("#enlaceMensaje").attr("href","../vistas/index.php");
           }          
           $("#mensaje").modal('show');          
         },
         error: function (data) {
-          $("#resp").html(data);
+            $("#tituloMensaje").html("¡Error!");
+            $("#textoMensaje").html(data);
+            $("#enlaceMensaje").attr("href","#");
+            $("#enlaceMensaje").attr("data-dismiss","modal");
+            $("#mensaje").modal('show');  
         }
       });   
       return false;
