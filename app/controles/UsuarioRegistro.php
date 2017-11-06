@@ -4,7 +4,15 @@ include_once '../controles/Conexion.php';
 include_once '../modelo/Usuario.obj.php';
 include_once '../controles/Usuario.rep.php';
 
-$usuario = New Usuario('', filter_input(INPUT_POST, 'nombre'), filter_input(INPUT_POST, 'email'), filter_input(INPUT_POST, 'clave1'), '', 0);
+$clave = password_hash(filter_input(INPUT_POST, 'clave1'),PASSWORD_DEFAULT);
+
+$usuario = New Usuario('', filter_input(INPUT_POST, 'nombre'), filter_input(INPUT_POST, 'email'), $clave, '', 0);
+
+/*
+$clave = password_hash(filter_input(INPUT_GET, 'clave1'),PASSWORD_DEFAULT);
+
+$usuario = New Usuario('', filter_input(INPUT_GET, 'nombre'), filter_input(INPUT_GET, 'email'), $clave, '', 0);
+*/
 
 Conexion::abrir_conexion();
 $conexion = Conexion::obtener_conexion();

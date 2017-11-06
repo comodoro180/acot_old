@@ -6,7 +6,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="index.php">ACOT</a>
+        <a class="navbar-brand" href="<?php echo INICIO ?>">ACOT</a>
 
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav">
@@ -21,7 +21,7 @@
                 <li><a href="#">Menu6</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="RegistroUsuario.php">Registro</a></li>
+              <li><a href="<?php echo REGISTRO_USUARIO ?>">Registro</a></li>
                 <li><a href="#">Registro2</a></li>                       
             </ul>
         </div>

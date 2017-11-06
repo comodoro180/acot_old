@@ -1,4 +1,5 @@
 <?php
+include_once '../conf/config.inc.php';
 include_once '../controles/Conexion.php';
 include_once '../controles/Usuario.rep.php';
 $titulo = 'Registro';
@@ -59,8 +60,9 @@ include_once '../plantillas/menu.php';
       <div class="modal-body">
         <p id="textoMensaje"> </p>
       </div>
-      <div class="modal-footer">
-        <a id="enlaceMensaje" href="#" class="btn btn-primary">Cerrar</a>
+      <div id="mensajePie" class="modal-footer">
+        <a id="enlaceInicio" href="<?php echo INICIO ?>" class="btn btn-primary" data-dismiss="modal">Volver al menu</a>
+        <a id="enlaceMensaje" class="btn btn-primary">Cerrar</a>        
       </div>
     </div>      
   </div>

@@ -38,7 +38,7 @@ class RepositorioUsuario {
 
         if (isset($conexion)) {
             try {
-                $sql = "INSERT INTO usuario(nombre, email, clave, fecha_registro, activo) VALUES(:nombre, :email, :clave, NOW(), 0)";
+                $sql = "INSERT INTO usuario (nombre, email, clave, fecha_registro, activo) VALUES(:nombre, :email, :clave, NOW(), 0)";
 
                 $nombre = $usuario->obtener_nombre();
                 $email = $usuario->obtener_email();
