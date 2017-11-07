@@ -10,3 +10,5 @@ define('NOMBRE_BD', 'acot');
 define('SERVIDOR','http://localhost:8080/acot/app');
 define('INICIO',SERVIDOR.'/vistas/index.php');
 define('REGISTRO_USUARIO',SERVIDOR.'/vistas/RegistroUsuario.php');
+define('LOGIN',SERVIDOR.'/vistas/login.php');
+define('LOGOUT',SERVIDOR.'/vistas/logout.php');

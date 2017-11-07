@@ -70,7 +70,7 @@ $(document).ready(function () {
     }    
   });
   
-  $("#enlaceInicio").click(function (e) {
+  $("#enlaceInicio").click(function () {
     window.location = 'index.php';
   });
 });
