@@ -1,4 +1,5 @@
 <?php
+include_once '../conf/config.inc.php';
 include_once '../plantillas/encabezado.php';
 include_once '../plantillas/menu.php';
 ?>

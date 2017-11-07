@@ -16,6 +16,7 @@ if (!isset($titulo) || empty($titulo)) {
         <link rel="icon" type="image/png" href="../../img/acot.png" />
         
         <link href="../../css/bootstrap.min.css" rel="stylesheet">
-        <link href="../../css/estilos.css" rel="stylesheet">     
+        <link href="../../css/estilos.css" rel="stylesheet"> 
+        <link href="../../css/font-awesome.min.css" rel="stylesheet">         
     </head>
     <body>
