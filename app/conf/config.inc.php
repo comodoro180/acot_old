@@ -12,3 +12,4 @@ define('INICIO',SERVIDOR.'/vistas/index.php');
 define('REGISTRO_USUARIO',SERVIDOR.'/vistas/RegistroUsuario.php');
 define('LOGIN',SERVIDOR.'/vistas/login.php');
 define('LOGOUT',SERVIDOR.'/vistas/logout.php');
+define('ACTIVAR_USUARIO',SERVIDOR.'/vistas/ActivarUsuario.php');

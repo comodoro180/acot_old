@@ -61,6 +61,7 @@ include_once '../plantillas/menu.php';
         <p id="textoMensaje"> </p>
       </div>
       <div id="mensajePie" class="modal-footer">
+        <a id="enlaceActivar" href="<?php echo ACTIVAR_USUARIO ?>" class="btn btn-success pull-left" data-dismiss="modal">Activar usuario</a>
         <a id="enlaceInicio" href="<?php echo INICIO ?>" class="btn btn-primary" data-dismiss="modal">Volver al menu</a>
         <a id="enlaceMensaje" class="btn btn-primary">Cerrar</a>        
       </div>
