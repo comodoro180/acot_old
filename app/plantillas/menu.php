@@ -5,7 +5,7 @@ include_once '../conf/config.inc.php';
 <nav class="navbar navbar-default navbar-static-top">
   <div class="container-fluid">
 
-    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">          
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
@@ -21,9 +21,10 @@ include_once '../conf/config.inc.php';
         <li><a href="#">Menu2</a></li>
         <li><a href="#">Menu3</a></li>
         <li><a href="#">Menu4</a></li>
-        <li><a href="#">Menu6</a></li>
+<!--        <li><a href="<?php echo ACTIVAR_USUARIO ?>">Activar usuario</a></li> -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
+          <li><a href="<?php echo ACTIVAR_USUARIO ?>">Activar usuario</a></li>
           <?php
           if (ControlSesion::sesion_iniciada()) {
               ?>
@@ -33,13 +34,6 @@ include_once '../conf/config.inc.php';
                 <?php echo ' ' . $_SESSION['nombre_usuario']; ?>
               </a>
             </li>
-<!--            
-            <li>
-              <a href="<?php echo RUTA_GESTOR; ?>">
-                <span class="glyphicon glyphicon-dashboard" aria-hidden="true"></span> Gestor
-              </a>
-            </li> 
--->
             <li>
               <a href="<?php echo LOGOUT; ?>">
                 <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Cerrar sesión

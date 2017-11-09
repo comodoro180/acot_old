@@ -29,8 +29,8 @@ if ($nombre_existe) {
     } else {
         $destinatario = $usuario->obtener_email();
         $asunto = "ACOT-Código de activación";
-        $mensaje = "Gracias por registrarte! <br>"
-                . "Ingresa el siguiente código para activar tu usuario<br><h2>".$codigo."</h2>";
+        $mensaje = "Gracias por registrarte! \n"
+                . "Ingresa el siguiente código para activar tu usuario :".$codigo;
 
         $exito = mail($destinatario, $asunto, $mensaje);
 

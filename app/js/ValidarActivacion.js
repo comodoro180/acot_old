@@ -7,8 +7,8 @@ $(document).ready(function () {
   $("#mensaje").hide();
   
   $("#activar").click(function () {
-    alert('activar');
-    $("#activar").remove(); //Esto hace que el mensaje de error no se muestre desde el pricinpio
+    //alert('activar');
+    $("#error").remove(); //Esto hace que el mensaje de error no se muestre desde el pricinpio
 
     if ($("#email").val() === "" || !emailreg.test($("#email").val())) {
       $("#email").focus().after(error_incio + "Ingrese un email correcto" + error_fin);
@@ -27,7 +27,7 @@ $(document).ready(function () {
         success: function (data,status)
         {       
           if (data!==""){
-            alert("1Data: " + data + "\nStatus: " + status);
+            //alert("1Data: " + data + "\nStatus: " + status);
             $("#mensaje").show();
             $("#mensaje").attr("class","alert alert-danger text-center");
             $("#mensaje").html(data);
@@ -41,8 +41,11 @@ $(document).ready(function () {
             $("#mensaje").modal('show');
             */
           } else {            
-            alert("2Data: " + data + "\nStatus: " + status);
-            window.location = 'index.php';
+            //alert("2Data: " + data + "\nStatus: " + status);
+            $("#mensaje").show();
+            $("#mensaje").attr("class","alert alert-success text-center");
+            $("#mensaje").html("¡Usuario activado!");            
+            //window.location = 'index.php';
             /*
             $("#tituloMensaje").html("¡Transacción exitosa!");
             $("#textoMensaje").html("Usuario registrado correctamente.");            

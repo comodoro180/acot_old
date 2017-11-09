@@ -181,38 +181,44 @@ class RepositorioUsuario {
 
         if (isset($conexion)) {
             try {
-                //include_once '../modelo/Usuario.obj.php';
+                //echo 'paso 0';
                 $sql = "select u.id usuario_id,c.codigo codigo from usuario u,usuario_codigo c " .
                         "where u.id=c.usuario_id and u.email=:email";
 
                 $sentencia = $conexion->prepare($sql);
                 $sentencia->bindParam(':email', $email, PDO::PARAM_STR);
                 $sentencia->execute();
-
+                //echo 'paso 1';
                 $resultado = $sentencia->fetch();
 
-                if (empty($resultado) && !password_verify($codigo, $resultado['clave'])) {
+                if (empty($resultado) && !password_verify($codigo, $resultado['codigo'])) {
+                    //echo 'paso 2';
                     return false;
                 } else {
+                    //echo 'paso 3';
                     $sql = "update usuario u set u.activo=1 where u.id=:usuario_id";
 
                     $sentencia = $conexion->prepare($sql);
-                    $sentencia->bindParam(':usuario_id', $resultado['id'], PDO::PARAM_STR);
+                    //echo 'paso 3.1 ->'.$resultado['usuario_id'];
+                    $sentencia->bindParam(':usuario_id', $resultado['usuario_id'], PDO::PARAM_STR);
+                    //echo 'paso 3.1';
                     $sentencia->execute();
-
-                    $resultado = $sentencia->fetch();
-
-                    if (empty($resultado)) {
-                        return false;
-                    } else {
+                    //echo 'paso 3.2';
+                    $resultado = $sentencia -> rowCount();
+                    //echo 'paso 3.3';
+                    if (count($resultado)) {
+                        //echo 'paso 4';
                         return true;
+                    } else {
+                        //echo 'paso 5';
+                        return false;
                     }
-                    //$usuario = new Usuario($resultado['id'], $resultado['nombre'], $resultado['email'], $resultado['clave'], $resultado['fecha_registro'], $resultado['activo']);                    
                 }
             } catch (PDOException $ex) {
                 print 'ERROR' . $ex->getMessage();
             }
         } else {
+            //echo 'paso 6';
             return false;
         }
     }

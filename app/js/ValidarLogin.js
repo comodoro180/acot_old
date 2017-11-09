@@ -7,7 +7,7 @@ $(document).ready(function () {
   $("#mensaje").hide();
   
   $("#login").click(function () {
-    alert('login');
+    //alert('login');
     $("#error").remove(); //Esto hace que el mensaje de error no se muestre desde el pricinpio
 
     if ($("#email").val() === "" || !emailreg.test($("#email").val())) {
@@ -27,7 +27,7 @@ $(document).ready(function () {
         success: function (data,status)
         {       
           if (data!==""){
-            alert("1Data: " + data + "\nStatus: " + status);
+            //alert("1Data: " + data + "\nStatus: " + status);
             $("#mensaje").show();
             $("#mensaje").attr("class","alert alert-danger text-center");
             $("#mensaje").html(data);
@@ -41,7 +41,7 @@ $(document).ready(function () {
             $("#mensaje").modal('show');
             */
           } else {            
-            alert("2Data: " + data + "\nStatus: " + status);
+            //alert("2Data: " + data + "\nStatus: " + status);
             window.location = 'index.php';
             /*
             $("#tituloMensaje").html("¡Transacción exitosa!");
@@ -54,7 +54,11 @@ $(document).ready(function () {
           }
         },
         error: function (data,status) {
-            alert("3Data: " + data.data + "\nStatus: " + status);
+            //alert("3Data: " + data.data + "\nStatus: " + status);
+            $("#mensaje").show();
+            $("#mensaje").attr("class","alert alert-danger text-center");
+            $("#mensaje").html(data);
+            $("#mensaje").fadeOut(5000);            
             /*
             $("#tituloMensaje").html("¡Error!");
             $("#textoMensaje").html(data);

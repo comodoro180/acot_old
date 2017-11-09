@@ -14,8 +14,9 @@ $usuario = RepositorioUsuario::obtener_usuario_por_email($conexion, $email);
 
 $resultado = RepositorioUsuario::activar_usuario($conexion, $email, $codigo);
 
+
 if (!$resultado) {
   echo "Error al activar el usuario";
 } 
-  
+ 
 Conexion::cerrar_conexion();
