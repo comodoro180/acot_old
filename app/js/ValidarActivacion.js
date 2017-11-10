@@ -6,28 +6,28 @@ $(document).ready(function () {
   
   $("#mensaje").hide();
   
-  $("#login").click(function () {
-    //alert('login');
+  $("#activar").click(function () {
+    //alert('activar');
     $("#error").remove(); //Esto hace que el mensaje de error no se muestre desde el pricinpio
 
     if ($("#email").val() === "" || !emailreg.test($("#email").val())) {
       $("#email").focus().after(error_incio + "Ingrese un email correcto" + error_fin);
       return false;
 
-    } else if ($("#clave").val() === "") {
-      $("#clave").focus().after(error_incio + "Debe ingresar una contraseña" + error_fin);
+    } else if ($("#codigo").val() === "") {
+      $("#codigo").focus().after(error_incio + "Debe ingresar el código de activación" + error_fin);
       return false;
       
     } else {
-      var url_regsitro = '../controles/UsuarioLogin.php';
+      var url_regsitro = '../controles/UsuarioActivar.php';
       $.ajax({
         type: "POST",
         url: url_regsitro,
-        data: $("#formularioLogin").serialize(),
-        success: function (data,status)
+        data: $("#formularioActivacion").serialize(),
+        success: function (data)
         {       
           if (data!==""){
-            //alert("1Data: " + data + "\nStatus: " + status);
+            alert("1Data: " + data + "\nStatus: " + status);
             $("#mensaje").show();
             $("#mensaje").attr("class","alert alert-danger text-center");
             $("#mensaje").html(data);
@@ -41,8 +41,12 @@ $(document).ready(function () {
             $("#mensaje").modal('show');
             */
           } else {            
-            //alert("2Data: " + data + "\nStatus: " + status);
-            window.location = 'index.php';
+            alert("2Data: " + data + "\nStatus: " + status);
+            $("#mensaje").show();
+            $("#mensaje").attr("class","alert alert-success text-center");
+            $("#mensaje").html("¡Usuario activado!");
+            $("#mensaje").fadeOut(5000);
+            //window.location = 'index.php';
             /*
             $("#tituloMensaje").html("¡Transacción exitosa!");
             $("#textoMensaje").html("Usuario registrado correctamente.");            
@@ -54,11 +58,7 @@ $(document).ready(function () {
           }
         },
         error: function (data,status) {
-            //alert("3Data: " + data.data + "\nStatus: " + status);
-            $("#mensaje").show();
-            $("#mensaje").attr("class","alert alert-danger text-center");
-            $("#mensaje").html(data);
-            $("#mensaje").fadeOut(5000);            
+            alert("3Data: " + data.data + "\nStatus: " + status);
             /*
             $("#tituloMensaje").html("¡Error!");
             $("#textoMensaje").html(data);

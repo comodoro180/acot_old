@@ -45,14 +45,16 @@ $(document).ready(function () {
             $("#enlaceMensaje").attr("href","#");
             $("#enlaceMensaje").attr("data-dismiss","modal");
             $("#enlaceInicio").hide();
+            $("#enlaceActivar").hide();
             $("#mensaje").modal('show');
           } else {
             //alert("2Data: " + data + "\nStatus: " + status);
-            $("#tituloMensaje").html("¡Transacción exitosa!");
-            $("#textoMensaje").html("Usuario registrado correctamente.");            
+            $("#tituloMensaje").html("¡Usuario registrado correctamente!");
+            $("#textoMensaje").html("Hemos enviado un correo a la dirección registrada con un código para que la cuenta sea activada.");            
             //$("#enlaceMensaje").attr("data-dismiss","modal");
             $("#enlaceMensaje").hide();
             $("#enlaceInicio").show();
+            $("#enlaceActivar").show();
             $("#mensaje").modal('show');            
           }
         },
@@ -62,6 +64,7 @@ $(document).ready(function () {
             $("#textoMensaje").html(data);
             $("#enlaceMensaje").attr("href","#");
             $("#enlaceInicio").hide();
+            $("#enlaceActivar").hide();
             $("#enlaceMensaje").attr("data-dismiss","modal");
             $("#mensaje").modal('show');  
         }
@@ -72,6 +75,10 @@ $(document).ready(function () {
   
   $("#enlaceInicio").click(function () {
     window.location = 'index.php';
+  });
+  
+  $("#enlaceActivar").click(function () {
+    window.location = 'ActivarUsuario.php';
   });
 });
 
