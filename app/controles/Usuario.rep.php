@@ -146,5 +146,81 @@ class RepositorioUsuario {
         }
         
         return $usuario;
-    }    
+    }
+    
+    public static function insertar_codigo_activacion($conexion, $usuario_id) {
+        if (isset($conexion)) {
+            try {
+                $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                $numero_caracteres = strlen($caracteres);
+                $string_aleatorio = '';
+
+                for ($i = 0; $i < 7; $i++) {
+                    $string_aleatorio .= $caracteres[rand(0, $numero_caracteres - 1)];
+                }
+
+                $codigo = password_hash($string_aleatorio, PASSWORD_DEFAULT);
+
+                $sql = "INSERT INTO usuario_codigo (usuario_id, codigo) VALUES(:usuario_id, :codigo)";
+
+                $sentencia = $conexion->prepare($sql);
+
+                $sentencia->bindParam(':usuario_id', $usuario_id, PDO::PARAM_STR);
+                $sentencia->bindParam(':codigo', $codigo, PDO::PARAM_STR);
+
+                $sentencia->execute();
+                
+            } catch (PDOException $ex) {
+                print 'ERROR' . $ex->getMessage();
+            }
+        }
+        return $string_aleatorio;
+    }
+    
+    public static function activar_usuario($conexion, $email, $codigo) {
+
+        if (isset($conexion)) {
+            try {
+                //echo 'paso 0';
+                $sql = "select u.id usuario_id,c.codigo codigo from usuario u,usuario_codigo c " .
+                        "where u.id=c.usuario_id and u.email=:email";
+
+                $sentencia = $conexion->prepare($sql);
+                $sentencia->bindParam(':email', $email, PDO::PARAM_STR);
+                $sentencia->execute();
+                //echo 'paso 1';
+                $resultado = $sentencia->fetch();
+                
+                if (!password_verify($codigo, $resultado['codigo'])){
+                    //echo '!Codigo incorrecto¡<br>';
+                    return false;
+                    
+                } else {                    
+                    $sql = "update usuario u set u.activo=1 where u.id=:usuario_id";
+
+                    $sentencia = $conexion->prepare($sql);
+                    //echo 'paso 3.1 ->'.$resultado['usuario_id'];
+                    $sentencia->bindParam(':usuario_id', $resultado['usuario_id'], PDO::PARAM_STR);
+                    //echo 'paso 3.1';
+                    $sentencia->execute();
+                    //echo 'paso 3.2';
+                    $resultado = $sentencia -> rowCount();
+                    //echo 'paso 3.3';
+                    if (count($resultado)) {
+                        //echo 'paso 4';
+                        return true;
+                    } else {
+                        //echo 'paso 5';
+                        return false;
+                    }
+                }
+            } catch (PDOException $ex) {
+                print 'ERROR' . $ex->getMessage();
+            }
+        } else {
+            //echo 'paso 6';
+            return false;
+        }
+    }
+
 }

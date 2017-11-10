@@ -8,12 +8,6 @@ $clave = password_hash(filter_input(INPUT_POST, 'clave1'),PASSWORD_DEFAULT);
 
 $usuario = New Usuario('', filter_input(INPUT_POST, 'nombre'), filter_input(INPUT_POST, 'email'), $clave, '', 0);
 
-/*
-$clave = password_hash(filter_input(INPUT_GET, 'clave1'),PASSWORD_DEFAULT);
-
-$usuario = New Usuario('', filter_input(INPUT_GET, 'nombre'), filter_input(INPUT_GET, 'email'), $clave, '', 0);
-*/
-
 Conexion::abrir_conexion();
 $conexion = Conexion::obtener_conexion();
 
@@ -25,7 +19,25 @@ if ($nombre_existe) {
 } else if ($email_existe) {
     echo 'El email ya se encuentra registrado';
 } else {
-    $usuario_insertado = RepositorioUsuario::insertar_usuario($conexion, $usuario);    
+    RepositorioUsuario::insertar_usuario($conexion, $usuario);
+    $usuario_insertado=RepositorioUsuario::obtener_usuario_por_email($conexion, $usuario->obtener_email());
+    $codigo = RepositorioUsuario::insertar_codigo_activacion($conexion, $usuario_insertado->obtener_id());
+    
+    if (!isset($codigo)){        
+        echo 'Transacción sin código de activación.';
+        
+    } else {
+        $destinatario = $usuario->obtener_email();
+        $asunto = "ACOT-Código de activación";
+        $mensaje = "Gracias por registrarte! \n"
+                . "Ingresa el siguiente código para activar tu usuario :".$codigo;
+
+        $exito = mail($destinatario, $asunto, $mensaje);
+
+        if (!$exito) {
+                echo 'envio fallido '.$codigo;
+        }         
+    }
 }
 
 Conexion::cerrar_conexion();
