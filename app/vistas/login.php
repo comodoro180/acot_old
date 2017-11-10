@@ -36,7 +36,7 @@ if (ControlSesion::sesion_iniciada()){
           <br>
           <br>
           <div class="text-center">
-            <a href="<?php echo RUTA_RECUPERAR_CLAVE; ?>">¿Olvidaste tu contraseña?</a>
+            <a href="<?php echo RECUPERAR_CLAVE; ?>">¿Olvidaste tu contraseña?</a>
           </div>          
         </div> 
         <div id="mensaje" class="hide" role="alert">           

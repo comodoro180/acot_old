@@ -148,7 +148,7 @@ class RepositorioUsuario {
         return $usuario;
     }
     
-    public static function insertar_codigo_activacion($conexion, $usuario_id) {
+    public static function insertar_codigo($conexion, $usuario_id, $tipo) {
         if (isset($conexion)) {
             try {
                 $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -161,7 +161,11 @@ class RepositorioUsuario {
 
                 $codigo = password_hash($string_aleatorio, PASSWORD_DEFAULT);
 
-                $sql = "INSERT INTO usuario_codigo (usuario_id, codigo) VALUES(:usuario_id, :codigo)";
+                if ($tipo == 'activar') {
+                    $sql = "INSERT INTO usuario_codigo (usuario_id, codigo) VALUES(:usuario_id, :codigo)";
+                } else {
+                    $sql = "INSERT INTO usuario_codigo (usuario_id, codigo, tipo) VALUES(:usuario_id, :codigo , 'clave')";
+                }
 
                 $sentencia = $conexion->prepare($sql);
 
@@ -169,14 +173,13 @@ class RepositorioUsuario {
                 $sentencia->bindParam(':codigo', $codigo, PDO::PARAM_STR);
 
                 $sentencia->execute();
-                
             } catch (PDOException $ex) {
                 print 'ERROR' . $ex->getMessage();
             }
         }
         return $string_aleatorio;
     }
-    
+
     public static function activar_usuario($conexion, $email, $codigo) {
 
         if (isset($conexion)) {
@@ -222,5 +225,33 @@ class RepositorioUsuario {
             return false;
         }
     }
-
+    
+    public static function recuperar_clave($email){
+        if (isset($email)){
+            try{
+                Conexion::abrir_conexion();
+                $conexion= Conexion::obtener_conexion();
+                
+                $usuario= RepositorioUsuario::obtener_usuario_por_email($conexion, $email);
+                
+                if (isset($usuario)){
+                    
+                    //
+                    try {
+                        $codigo= RepositorioUsuario::insertar_codigo($conexion, $usuario->obtener_id(), 'clave');
+                        echo $codigo;
+                    } catch (PDOException $ex){
+                        null;
+                    }
+                    
+                }
+                
+                Conexion::cerrar_conexion();
+            } catch (PDOException $ex) {                
+                print 'ERROR' . $ex->getMessage();
+            }
+            
+        }
+    }    
+    
 }
