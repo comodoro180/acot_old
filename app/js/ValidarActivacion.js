@@ -27,7 +27,7 @@ $(document).ready(function () {
         success: function (data)
         {       
           if (data!==""){
-            alert("1Data: " + data + "\nStatus: " + status);
+            //alert("1Data: " + data + "\nStatus: " + status);
             $("#mensaje").show();
             $("#mensaje").attr("class","alert alert-danger text-center");
             $("#mensaje").html(data);
@@ -41,7 +41,7 @@ $(document).ready(function () {
             $("#mensaje").modal('show');
             */
           } else {            
-            alert("2Data: " + data + "\nStatus: " + status);
+            //alert("2Data: " + data + "\nStatus: " + status);
             $("#mensaje").show();
             $("#mensaje").attr("class","alert alert-success text-center");
             $("#mensaje").html("¡Usuario activado!");
