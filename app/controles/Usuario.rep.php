@@ -190,12 +190,12 @@ class RepositorioUsuario {
                 $sentencia->execute();
                 //echo 'paso 1';
                 $resultado = $sentencia->fetch();
-
-                if (empty($resultado) && !password_verify($codigo, $resultado['codigo'])) {
-                    //echo 'paso 2';
+                
+                if (!password_verify($codigo, $resultado['codigo'])){
+                    //echo '!Codigo incorrecto¡<br>';
                     return false;
-                } else {
-                    //echo 'paso 3';
+                    
+                } else {                    
                     $sql = "update usuario u set u.activo=1 where u.id=:usuario_id";
 
                     $sentencia = $conexion->prepare($sql);
