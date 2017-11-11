@@ -24,22 +24,24 @@ if (isset($_POST['RecuperarClave'])){
           <h4>Recuperar contraseña</h4>
         </div>
         <div class="panel-body"> 
-          <form id="formularioRecuperarClave" rol="form" action="<?php $_SERVER['PHP_SELF']?>" method="POST">                        
-            <input id="email" type="email" name="email" class="form-control" placeholder="Email" required autofocus>
-            <br>
+          <form id="formularioRecuperarClave" rol="form" action="<?php $_SERVER['PHP_SELF'] ?>" method="POST">                        
+            <input id="email" type="email" name="email" class="form-control" placeholder="Email" required autofocus>            
             <br>
             <button id="RecuperarClave" name="RecuperarClave" class="btn btn-primary btn-block">
               Enviar
             </button>
           </form>
           <br>
-          <br>
-<!--          <div class="text-center">
-            <a href="<?php echo RECUPERAR_CLAVE; ?>">¿Olvidaste tu contraseña?</a>
-          </div>          -->
         </div> 
-        <div id="mensaje" class="hide" role="alert">           
-        </div>
+        <?php
+        if (isset($_POST['RecuperarClave'])) {
+            ?>
+            <div id="mensaje" class="alert alert-success" role="alert"> 
+              Solicitud enviada. Por favor revisa tu correo.
+            </div>
+            <?php
+        }
+        ?>
       </div>
     </div>
   </div>

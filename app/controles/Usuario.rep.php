@@ -148,6 +148,36 @@ class RepositorioUsuario {
         return $usuario;
     }
     
+    
+    public static function existe_codigo($conexion, $usuario_id, $tipo) {
+        $existe_codigo = false;
+
+        if (isset($conexion)) {
+            try {
+                $sql = "SELECT * FROM usuario_codigo WHERE usuario_id = :usuario_id and tipo=:tipo";
+
+                $sentencia = $conexion->prepare($sql);
+
+                $sentencia->bindParam(':usuario_id', $usuario_id, PDO::PARAM_STR);
+                $sentencia->bindParam(':tipo', $tipo, PDO::PARAM_STR);
+
+                $sentencia->execute();
+
+                $resultado = $sentencia->fetchAll();
+
+                if (count($resultado)) {
+                    $existe_codigo = true;
+                } else {
+                    $existe_codigo = false;
+                }
+            } catch (PDOException $ex) {
+                print 'ERROR' . $ex->getMessage();
+            }
+        }
+
+        return $existe_codigo;
+    }
+
     public static function insertar_codigo($conexion, $usuario_id, $tipo) {
         if (isset($conexion)) {
             try {
@@ -161,20 +191,23 @@ class RepositorioUsuario {
 
                 $codigo = password_hash($string_aleatorio, PASSWORD_DEFAULT);
 
-                if ($tipo == 'activar') {
-                    $sql = "INSERT INTO usuario_codigo (usuario_id, codigo) VALUES(:usuario_id, :codigo)";
+                if (RepositorioUsuario::existe_codigo($conexion,$usuario_id, $tipo)) {
+                    $sql = "UPDATE usuario_codigo set codigo=:codigo where usuario_id=:usuario_id and tipo=:tipo";
+                    
                 } else {
-                    $sql = "INSERT INTO usuario_codigo (usuario_id, codigo, tipo) VALUES(:usuario_id, :codigo , 'clave')";
+                    $sql = "INSERT INTO usuario_codigo (usuario_id, codigo ,tipo) VALUES(:usuario_id, :codigo, :tipo)";
                 }
 
                 $sentencia = $conexion->prepare($sql);
 
+                $sentencia->bindParam(':tipo', $tipo, PDO::PARAM_STR);
                 $sentencia->bindParam(':usuario_id', $usuario_id, PDO::PARAM_STR);
                 $sentencia->bindParam(':codigo', $codigo, PDO::PARAM_STR);
 
                 $sentencia->execute();
-            } catch (PDOException $ex) {
+            } catch (PDOException $ex) {                
                 print 'ERROR' . $ex->getMessage();
+                return '';
             }
         }
         return $string_aleatorio;
@@ -226,32 +259,35 @@ class RepositorioUsuario {
         }
     }
     
-    public static function recuperar_clave($email){
-        if (isset($email)){
-            try{
+    public static function recuperar_clave($email) {
+        if (isset($email)) {
+            try {
                 Conexion::abrir_conexion();
-                $conexion= Conexion::obtener_conexion();
-                
-                $usuario= RepositorioUsuario::obtener_usuario_por_email($conexion, $email);
-                
-                if (isset($usuario)){
-                    
-                    //
-                    try {
-                        $codigo= RepositorioUsuario::insertar_codigo($conexion, $usuario->obtener_id(), 'clave');
-                        echo $codigo;
-                    } catch (PDOException $ex){
-                        null;
-                    }
-                    
+                $conexion = Conexion::obtener_conexion();
+
+                $usuario = RepositorioUsuario::obtener_usuario_por_email($conexion, $email);
+
+                if (isset($usuario)) {
+                    $codigo = RepositorioUsuario::insertar_codigo($conexion, $usuario->obtener_id(), 'clave');
                 }
                 
+                if (isset($codigo)){
+                    $destinatario = $usuario->obtener_email();
+                    $asunto = "ACOT-Recuperación de clave";
+                    $mensaje = "Ingresa el siguiente código para recuperar la clave : ".$codigo;
+
+                    $exito = mail($destinatario, $asunto, $mensaje);
+
+                    if (!$exito) {
+                            echo 'envio fallido '.$codigo;
+                    }                        
+                }
+
                 Conexion::cerrar_conexion();
-            } catch (PDOException $ex) {                
+            } catch (PDOException $ex) {
                 print 'ERROR' . $ex->getMessage();
             }
-            
         }
-    }    
-    
+    }
+
 }
