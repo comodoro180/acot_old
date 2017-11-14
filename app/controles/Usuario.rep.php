@@ -328,4 +328,27 @@ class RepositorioUsuario {
         return $codigo_valido;
     }
 
+    public static function cambiar_clave ($conexion,$usuario_id,$clave){
+        $cambio_exitoso=false;
+        if (isset($conexion)){
+            $clave = password_hash($clave,PASSWORD_DEFAULT);
+            
+            try {
+                
+                $sql = "UPDATE usuario set clave=:clave where id=:usuario_id";                
+
+                $sentencia = $conexion->prepare($sql);
+
+                $sentencia->bindParam(':clave', $clave, PDO::PARAM_STR);
+                $sentencia->bindParam(':usuario_id', $usuario_id, PDO::PARAM_STR);                
+
+                $sentencia->execute(); 
+                
+                $cambio_exitoso=true;
+            } catch (PDOException $ex) {
+                 print 'ERROR' . $ex->getMessage();
+            }
+        }
+        return $cambio_exitoso;
+    }
 }

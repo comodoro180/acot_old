@@ -7,27 +7,16 @@ $titulo = 'Cambiar clave';
 include_once '../plantillas/encabezado.php';
 include_once '../plantillas/menu.php';
 
-//$codigo_valido=false;
+$codigo_valido = false;
 //$mensaje='';
 
- if (isset($_POST['validarCodigo'])) {
-     $email=$_POST['email'];
-     $codigo=$_POST['codigo'];
-     if (RepositorioUsuario::validar_codigo($email, $codigo)){
-         $codigo_valido = true;
-     }
- }
- 
- if ($codigo_valido && isset($_POST['cambiarClave'])) {
-     $clave1=$_POST['nuevaClave1'];
-     $clave2=$_POST['nuevaClave2'];
-     if ($clave1!==$clave2){
-         $mensaje='Las claves deben coincidir';
-     } else {
-         $mensaje='ok';
-     }
- }
-
+if (isset($_POST['validarCodigo'])) {
+    $email = $_POST['email'];
+    $codigo = $_POST['codigo'];
+    if (RepositorioUsuario::validar_codigo($email, $codigo)) {
+        $codigo_valido = true;
+    }
+}
 ?>
 
 <div class="container">
@@ -44,19 +33,29 @@ include_once '../plantillas/menu.php';
               <?php
               if (!$codigo_valido) {
                   ?>            
-                <input id="email" type="email" name="email" class="form-control" placeholder="Email" required autofocus>
+                <input id="email" type="email" name="email" class="form-control" placeholder="Email" required value="<?php if (isset($_POST['validarCodigo'])) {echo $email;} ?>">
                 <br>
                 <input id="codigo" type="text" name="codigo" class="form-control" placeholder="Código" required> 
                 <br>
                 <button id="validarCodigo" name="validarCodigo" class="btn btn-primary btn-block">
                   Validar código
-                </button>            
+                </button> 
                 <?php
+                if (isset($_POST['validarCodigo'])) {
+                    ?>                 
+                    <br>
+                    <div id="mensaje1" class="alert alert-danger" role="alert"> 
+                      Código no valido
+                    </div>                  
+                    <?php
+                }
             }
             ?>             
             <?php
             if ($codigo_valido) {
                 ?>
+                <input id="email" type="email" name="email" class="form-control" placeholder="Email" value="<?php echo $email ?>" >
+                <br>                
                 <input id="nuevaClave1" type="password" name="nuevaClave1" class="form-control" placeholder="Nueva clave" required> 
                 <br>
                 <input id="nuevaClave2" type="password" name="nuevaClave2" class="form-control" placeholder="Repite la nueva clave" required> 
@@ -70,15 +69,8 @@ include_once '../plantillas/menu.php';
           </form>
           <br>       
         </div> 
-        <?php
-        if ($mensaje!='') {
-            ?>
-            <div id="mensaje" class="alert alert-success" role="alert"> 
-              <?php echo "Error: ".$mensaje ?>
-            </div>
-            <?php
-        } else { echo "Hola";}
-        ?>        
+        <div id="mensaje" class="alert alert-success hide" role="alert">           
+        </div>      
       </div>
     </div>
   </div>
@@ -87,7 +79,7 @@ include_once '../plantillas/menu.php';
 
 <script src="../../js/jquery.min.js"></script>
 <script src="../../js/bootstrap.min.js"></script> 
-<!-- <script src="../js/ValidarActivacion.js"></script> -->
+<script src="../js/ValidarCambioClave.js"></script>
 <?php
 include_once '../plantillas/pie.php';
 ?>
