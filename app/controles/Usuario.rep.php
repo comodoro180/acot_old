@@ -219,7 +219,7 @@ class RepositorioUsuario {
             try {
                 //echo 'paso 0';
                 $sql = "select u.id usuario_id,c.codigo codigo from usuario u,usuario_codigo c " .
-                        "where u.id=c.usuario_id and u.email=:email";
+                        "where u.id=c.usuario_id and u.email=:email and c.tipo='activar'";
 
                 $sentencia = $conexion->prepare($sql);
                 $sentencia->bindParam(':email', $email, PDO::PARAM_STR);
@@ -282,12 +282,50 @@ class RepositorioUsuario {
                             echo 'envio fallido '.$codigo;
                     }                        
                 }
-
+                
                 Conexion::cerrar_conexion();
             } catch (PDOException $ex) {
                 print 'ERROR' . $ex->getMessage();
             }
         }
+    }
+    
+    public static function validar_codigo($email,$codigo) {
+        $codigo_valido=false;
+        Conexion::abrir_conexion();
+        $conexion= Conexion::obtener_conexion();
+        
+        $usuario=RepositorioUsuario::obtener_usuario_por_email($conexion, $email);
+        
+        if (!isset($usuario)) {
+            $codigo_valido = false;
+        } else {
+            if (!RepositorioUsuario::existe_codigo($conexion, $usuario->obtener_id(), 'clave')) {
+                $codigo_valido = false;
+            } else {
+                try {
+                    $sql = "select u.id usuario_id,c.codigo codigo from usuario u,usuario_codigo c " .
+                            "where u.id=c.usuario_id and u.email=:email and c.tipo='clave'";
+
+                    $sentencia = $conexion->prepare($sql);
+                    $sentencia->bindParam(':email', $email, PDO::PARAM_STR);
+                    $sentencia->execute();
+                    //echo 'paso 1';
+                    $resultado = $sentencia->fetch();
+
+                    if (!password_verify($codigo, $resultado['codigo'])) {
+                        //echo '!Codigo incorrecto¡<br>';
+                        $codigo_valido = false;
+                    } else {
+                        $codigo_valido = true;
+                    }
+                } catch (PDOException $ex) {
+                    print 'ERROR' . $ex->getMessage();
+                }
+            }
+        }
+        Conexion::cerrar_conexion();
+        return $codigo_valido;
     }
 
 }

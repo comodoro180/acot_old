@@ -14,3 +14,4 @@ define('LOGIN',SERVIDOR.'/vistas/login.php');
 define('LOGOUT',SERVIDOR.'/vistas/logout.php');
 define('ACTIVAR_USUARIO',SERVIDOR.'/vistas/ActivarUsuario.php');
 define('RECUPERAR_CLAVE',SERVIDOR.'/vistas/RecuperarClave.php');
+define('CAMBIAR_CLAVE',SERVIDOR.'/vistas/CambiarClave.php');

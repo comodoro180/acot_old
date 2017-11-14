@@ -24,6 +24,7 @@ include_once '../conf/config.inc.php';
 <!--        <li><a href="<?php echo ACTIVAR_USUARIO ?>">Activar usuario</a></li> -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
+          <li><a href="<?php echo CAMBIAR_CLAVE ?>">Cambiar clave</a></li>
           <li><a href="<?php echo ACTIVAR_USUARIO ?>">Activar usuario</a></li>
           <?php
           if (ControlSesion::sesion_iniciada()) {
