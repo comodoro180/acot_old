@@ -21,7 +21,7 @@ if ($nombre_existe) {
 } else {
     RepositorioUsuario::insertar_usuario($conexion, $usuario);
     $usuario_insertado=RepositorioUsuario::obtener_usuario_por_email($conexion, $usuario->obtener_email());
-    $codigo = RepositorioUsuario::insertar_codigo_activacion($conexion, $usuario_insertado->obtener_id());
+    $codigo = RepositorioUsuario::insertar_codigo($conexion, $usuario_insertado->obtener_id(),'activar');
     
     if (!isset($codigo)){        
         echo 'Transacción sin código de activación.';

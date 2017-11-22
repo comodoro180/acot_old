@@ -39,3 +39,11 @@ body {
 .btn-primary {
     background-color: deepskyblue !important;
 }
+
+.dropdown-menu {
+    background-color: #2b2b2b;
+}
+
+.open > a {
+    background-color: #2b2b2b !important;
+}

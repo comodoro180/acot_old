@@ -21,18 +21,23 @@ include_once '../conf/config.inc.php';
         <li><a href="#">Menu2</a></li>
         <li><a href="#">Menu3</a></li>
         <li><a href="#">Menu4</a></li>
-<!--        <li><a href="<?php echo ACTIVAR_USUARIO ?>">Activar usuario</a></li> -->
       </ul>
       <ul class="nav navbar-nav navbar-right">
-          <li><a href="<?php echo ACTIVAR_USUARIO ?>">Activar usuario</a></li>
           <?php
           if (ControlSesion::sesion_iniciada()) {
               ?>
-            <li>
-              <a href="#">
+
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
                 <?php echo ' ' . $_SESSION['nombre_usuario']; ?>
-              </a>
+                <i class="fa fa-caret-down" aria-hidden="true"></i>
+              </a>              
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">                    
+                <a class="dropdown-item btn" href="<?php echo CAMBIAR_CLAVE; ?>">Cambiar contraseña</a>                    
+                <a class="dropdown-item btn" href="#">Opción 2</a><br>                   
+                <a class="dropdown-item btn" href="#">Opción 3</a>
+              </div>
             </li>
             <li>
               <a href="<?php echo LOGOUT; ?>">

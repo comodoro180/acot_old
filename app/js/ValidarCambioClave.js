@@ -1,29 +1,27 @@
 $(document).ready(function () {
-
-  var emailreg = /^[a-zA-Z0-9_\.\-]+@[a-zA-Z0-9\-]+\.[a-zA-Z0-9\-\.]+$/;
   var error_incio = "<div id='error' class='alert alert-danger' role='alert'>";
   var error_fin = "</div>";
-  
+
   $("#mensaje").hide();
-  
-  $("#activar").click(function () {
-    //alert('activar');
+
+  $("#cambiarClave").click(function () {
     $("#error").remove(); //Esto hace que el mensaje de error no se muestre desde el pricinpio
-
-    if ($("#email").val() === "" || !emailreg.test($("#email").val())) {
-      $("#email").focus().after(error_incio + "Ingrese un email correcto" + error_fin);
+    if ($("#nuevaClave1").val()===''){
+      $("#nuevaClave1").focus().after(error_incio + "Debes ingresar una nueva contraseña" + error_fin);
       return false;
-
-    } else if ($("#codigo").val() === "") {
-      $("#codigo").focus().after(error_incio + "Debe ingresar el código de activación" + error_fin);
+    }
+    
+    if ($("#nuevaClave1").val() !== $("#nuevaClave2").val()) {
+      $("#nuevaClave2").focus().after(error_incio + "Las contraseñas deben ser iguales" + error_fin);
       return false;
       
-    } else {
-      var url_regsitro = '../controles/UsuarioActivar.php';
+    } else { // Datos de usuario validos   
+      var url_regsitro = '../controles/UsuarioCambioClave.php';
+      
       $.ajax({
         type: "POST",
         url: url_regsitro,
-        data: $("#formularioActivacion").serialize(),
+        data: $("#formularioCambioClave").serialize(),
         success: function (data)
         {       
           if (data!==""){
@@ -31,29 +29,28 @@ $(document).ready(function () {
             $("#mensaje").show();
             $("#mensaje").attr("class","alert alert-danger text-center");
             $("#mensaje").html(data);
-            $("#mensaje").fadeOut(5000);
             /*
             $("#tituloMensaje").html("¡Error!");
             $("#textoMensaje").html(data);
             $("#enlaceMensaje").attr("href","#");
-            $("#enlaceMensaje").attr("class","alert alert-danger text-center");
+            $("#enlaceMensaje").attr("data-dismiss","modal");
             $("#enlaceInicio").hide();
+            $("#enlaceActivar").hide();
             $("#mensaje").modal('show');
             */
-          } else {            
+          } else {
             //alert("2Data: " + data + "\nStatus: " + status);
             $("#mensaje").show();
             $("#mensaje").attr("class","alert alert-success text-center");
-            $("#mensaje").html("¡Usuario activado!");
-            $("#mensaje").fadeOut(5000);
-            //window.location = 'index.php';
+            $("#mensaje").html("Clave cambiada correctamente");            
             /*
-            $("#tituloMensaje").html("¡Transacción exitosa!");
-            $("#textoMensaje").html("Usuario registrado correctamente.");            
+            $("#tituloMensaje").html("¡Usuario registrado correctamente!");
+            $("#textoMensaje").html("Hemos enviado un correo a la dirección registrada con un código para que la cuenta sea activada.");            
             //$("#enlaceMensaje").attr("data-dismiss","modal");
             $("#enlaceMensaje").hide();
             $("#enlaceInicio").show();
-            $("#mensaje").modal('show');
+            $("#enlaceActivar").show();
+            $("#mensaje").modal('show');  
             */
           }
         },
@@ -64,12 +61,15 @@ $(document).ready(function () {
             $("#textoMensaje").html(data);
             $("#enlaceMensaje").attr("href","#");
             $("#enlaceInicio").hide();
+            $("#enlaceActivar").hide();
             $("#enlaceMensaje").attr("data-dismiss","modal");
             $("#mensaje").modal('show');
             */
         }
-      }); 
-      return false;
-    }    
+      });      
+      return false;      
+    }
   });
 });
+
+

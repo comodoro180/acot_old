@@ -34,10 +34,13 @@ if (ControlSesion::sesion_iniciada()){
             </button>
           </form>
           <br>
+          <div class="text-center">
+            <a href="<?php echo RECUPERAR_CLAVE; ?>">¿Olvidaste tu contraseña?</a>
+          </div>
           <br>
           <div class="text-center">
-            <a href="<?php echo RUTA_RECUPERAR_CLAVE; ?>">¿Olvidaste tu contraseña?</a>
-          </div>          
+            <a href="<?php echo ACTIVAR_USUARIO; ?>">Activar usuario</a>
+          </div>           
         </div> 
         <div id="mensaje" class="hide" role="alert">           
         </div>

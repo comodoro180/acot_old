@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-11-2017 a las 21:53:20
+-- Tiempo de generación: 11-11-2017 a las 00:59:22
 -- Versión del servidor: 10.1.21-MariaDB
 -- Versión de PHP: 7.1.1
 
@@ -35,7 +35,7 @@ CREATE TABLE `usuario` (
   `activo` tinyint(4) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--------------------------------------------------------
+
 
 --
 -- Estructura de tabla para la tabla `usuario_codigo`
@@ -43,8 +43,10 @@ CREATE TABLE `usuario` (
 
 CREATE TABLE `usuario_codigo` (
   `usuario_id` int(11) NOT NULL,
-  `codigo` varchar(255) NOT NULL
+  `codigo` varchar(255) NOT NULL,
+  `tipo` varchar(50) NOT NULL DEFAULT 'activar'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 
 --
 -- Índices para tablas volcadas
@@ -63,7 +65,7 @@ ALTER TABLE `usuario`
 -- Indices de la tabla `usuario_codigo`
 --
 ALTER TABLE `usuario_codigo`
-  ADD KEY `usuario_id` (`usuario_id`);
+  ADD UNIQUE KEY `usuario_id` (`usuario_id`,`tipo`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -74,16 +76,6 @@ ALTER TABLE `usuario_codigo`
 --
 ALTER TABLE `usuario`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=1;
---
--- Restricciones para tablas volcadas
---
-
---
--- Filtros para la tabla `usuario_codigo`
---
---ALTER TABLE `usuario_codigo`
---  ADD CONSTRAINT `usuario_codigo_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuario` (`id`) ON UPDATE CASCADE;
-
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
