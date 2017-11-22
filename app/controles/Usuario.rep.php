@@ -148,7 +148,37 @@ class RepositorioUsuario {
         return $usuario;
     }
     
-    public static function insertar_codigo_activacion($conexion, $usuario_id) {
+    
+    public static function existe_codigo($conexion, $usuario_id, $tipo) {
+        $existe_codigo = false;
+
+        if (isset($conexion)) {
+            try {
+                $sql = "SELECT * FROM usuario_codigo WHERE usuario_id = :usuario_id and tipo=:tipo";
+
+                $sentencia = $conexion->prepare($sql);
+
+                $sentencia->bindParam(':usuario_id', $usuario_id, PDO::PARAM_STR);
+                $sentencia->bindParam(':tipo', $tipo, PDO::PARAM_STR);
+
+                $sentencia->execute();
+
+                $resultado = $sentencia->fetchAll();
+
+                if (count($resultado)) {
+                    $existe_codigo = true;
+                } else {
+                    $existe_codigo = false;
+                }
+            } catch (PDOException $ex) {
+                print 'ERROR' . $ex->getMessage();
+            }
+        }
+
+        return $existe_codigo;
+    }
+
+    public static function insertar_codigo($conexion, $usuario_id, $tipo) {
         if (isset($conexion)) {
             try {
                 $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -161,29 +191,35 @@ class RepositorioUsuario {
 
                 $codigo = password_hash($string_aleatorio, PASSWORD_DEFAULT);
 
-                $sql = "INSERT INTO usuario_codigo (usuario_id, codigo) VALUES(:usuario_id, :codigo)";
+                if (RepositorioUsuario::existe_codigo($conexion,$usuario_id, $tipo)) {
+                    $sql = "UPDATE usuario_codigo set codigo=:codigo where usuario_id=:usuario_id and tipo=:tipo";
+                    
+                } else {
+                    $sql = "INSERT INTO usuario_codigo (usuario_id, codigo ,tipo) VALUES(:usuario_id, :codigo, :tipo)";
+                }
 
                 $sentencia = $conexion->prepare($sql);
 
+                $sentencia->bindParam(':tipo', $tipo, PDO::PARAM_STR);
                 $sentencia->bindParam(':usuario_id', $usuario_id, PDO::PARAM_STR);
                 $sentencia->bindParam(':codigo', $codigo, PDO::PARAM_STR);
 
                 $sentencia->execute();
-                
-            } catch (PDOException $ex) {
+            } catch (PDOException $ex) {                
                 print 'ERROR' . $ex->getMessage();
+                return '';
             }
         }
         return $string_aleatorio;
     }
-    
+
     public static function activar_usuario($conexion, $email, $codigo) {
 
         if (isset($conexion)) {
             try {
                 //echo 'paso 0';
                 $sql = "select u.id usuario_id,c.codigo codigo from usuario u,usuario_codigo c " .
-                        "where u.id=c.usuario_id and u.email=:email";
+                        "where u.id=c.usuario_id and u.email=:email and c.tipo='activar'";
 
                 $sentencia = $conexion->prepare($sql);
                 $sentencia->bindParam(':email', $email, PDO::PARAM_STR);
@@ -222,5 +258,97 @@ class RepositorioUsuario {
             return false;
         }
     }
+    
+    public static function recuperar_clave($email) {
+        if (isset($email)) {
+            try {
+                Conexion::abrir_conexion();
+                $conexion = Conexion::obtener_conexion();
 
+                $usuario = RepositorioUsuario::obtener_usuario_por_email($conexion, $email);
+
+                if (isset($usuario)) {
+                    $codigo = RepositorioUsuario::insertar_codigo($conexion, $usuario->obtener_id(), 'clave');
+                }
+                
+                if (isset($codigo)){
+                    $destinatario = $usuario->obtener_email();
+                    $asunto = "ACOT-Recuperación de clave";
+                    $mensaje = "Ingresa el siguiente código para recuperar la clave : ".$codigo;
+
+                    $exito = mail($destinatario, $asunto, $mensaje);
+
+                    if (!$exito) {
+                            echo 'envio fallido '.$codigo;
+                    }                        
+                }
+                
+                Conexion::cerrar_conexion();
+            } catch (PDOException $ex) {
+                print 'ERROR' . $ex->getMessage();
+            }
+        }
+    }
+    
+    public static function validar_codigo($email,$codigo) {
+        $codigo_valido=false;
+        Conexion::abrir_conexion();
+        $conexion= Conexion::obtener_conexion();
+        
+        $usuario=RepositorioUsuario::obtener_usuario_por_email($conexion, $email);
+        
+        if (!isset($usuario)) {
+            $codigo_valido = false;
+        } else {
+            if (!RepositorioUsuario::existe_codigo($conexion, $usuario->obtener_id(), 'clave')) {
+                $codigo_valido = false;
+            } else {
+                try {
+                    $sql = "select u.id usuario_id,c.codigo codigo from usuario u,usuario_codigo c " .
+                            "where u.id=c.usuario_id and u.email=:email and c.tipo='clave'";
+
+                    $sentencia = $conexion->prepare($sql);
+                    $sentencia->bindParam(':email', $email, PDO::PARAM_STR);
+                    $sentencia->execute();
+                    //echo 'paso 1';
+                    $resultado = $sentencia->fetch();
+
+                    if (!password_verify($codigo, $resultado['codigo'])) {
+                        //echo '!Codigo incorrecto¡<br>';
+                        $codigo_valido = false;
+                    } else {
+                        $codigo_valido = true;
+                    }
+                } catch (PDOException $ex) {
+                    print 'ERROR' . $ex->getMessage();
+                }
+            }
+        }
+        Conexion::cerrar_conexion();
+        return $codigo_valido;
+    }
+
+    public static function cambiar_clave ($conexion,$usuario_id,$clave){
+        $cambio_exitoso=false;
+        if (isset($conexion)){
+            $clave = password_hash($clave,PASSWORD_DEFAULT);
+            
+            try {
+                
+                $sql = "UPDATE usuario set clave=:clave where id=:usuario_id";                
+
+                $sentencia = $conexion->prepare($sql);
+
+                $sentencia->bindParam(':clave', $clave, PDO::PARAM_STR);
+                $sentencia->bindParam(':usuario_id', $usuario_id, PDO::PARAM_STR);                
+
+                $sentencia->execute(); 
+                
+                $cambio_exitoso=true;
+            } catch (PDOException $ex) {
+                 print 'ERROR' . $ex->getMessage();
+            }
+        }
+        return $cambio_exitoso;
+    }
 }
