@@ -33,7 +33,7 @@ if (isset($_POST['validarCodigo'])) {
               <?php
               if (!$codigo_valido) {
                   ?>            
-                <input id="email" type="email" name="email" class="form-control" placeholder="Email" required value="<?php if (isset($_POST['validarCodigo'])) {echo $email;} ?>">
+                <input id="email" type="email" name="email" class="form-control" placeholder="Email" required value="<?php if (isset($_POST['validarCodigo'])) echo $email;?>">
                 <br>
                 <input id="codigo" type="text" name="codigo" class="form-control" placeholder="Código" required> 
                 <br>

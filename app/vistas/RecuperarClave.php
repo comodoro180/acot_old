@@ -28,8 +28,13 @@ if (isset($_POST['RecuperarClave'])){
             <input id="email" type="email" name="email" class="form-control" placeholder="Email" required autofocus>            
             <br>
             <button id="RecuperarClave" name="RecuperarClave" class="btn btn-primary btn-block">
-              Enviar
+              Solicitar código
             </button>
+            <br>
+          <div class="text-center">
+            ¿Ya tienes un código? ingresalo 
+            <a href="<?php echo CAMBIAR_CLAVE; ?>">aqui</a>
+          </div>              
           </form>
           <br>
         </div> 
