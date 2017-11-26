@@ -13,11 +13,27 @@ include_once '../conf/config.inc.php';
     <a class="navbar-brand" href="<?php echo INICIO ?>">ACOT</a>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="#">
-            <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>                        
-            Menu
-          </a>
+          <li>
+          <a href="<?php echo ADMINISTRACION ?>">
+            <i class="fa fa-cogs" aria-hidden="true"></i>                       
+            Administración
+          </a>              
         </li>
+        <!-- Menu Administracion-->
+<!--        
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" id="menu_administracion" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-cogs" aria-hidden="true"></i>                       
+            Administración
+          </a>              
+          <div class="dropdown-menu" aria-labelledby="menu_administracion">                    
+            <a class="dropdown-item btn" href="#">Geográfica</a>                    
+            <a class="dropdown-item btn" href="#">Opción 2</a><br>                   
+            <a class="dropdown-item btn" href="#">Opción 3</a>
+          </div>
+        </li>
+-->
+        <!--fin menu administración-->
         <li><a href="#">Menu2</a></li>
         <li><a href="#">Menu3</a></li>
         <li><a href="#">Menu4</a></li>
