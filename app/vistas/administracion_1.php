@@ -21,6 +21,7 @@ include_once '../plantillas/menu.php';
                 </ul>
             <li><a href="#">Portfolio</a></li>  
             <li><a href="#">Contactoss</a></li>
+            <li><a href="#">Prueba 2</a></li>
         </ul>
     </nav>
 </div>
